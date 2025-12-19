@@ -34,7 +34,7 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/todo-app-backend:latest
 
   deploy-to-ec2:
-    need: login-build-push-docker
+    needs: login-build-push-docker
     runs-on: ubuntu-latest
 
     steps:
