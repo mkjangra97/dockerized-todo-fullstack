@@ -1,4 +1,4 @@
-FROM node:22-alpine AS Builder
+FROM node:22-slim AS Builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install --network-timeout=100000 --prefer-offline --no-audit
