@@ -91,7 +91,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/project1
-            docker compose down
+            docker compose down || true
             docker compose pull
             docker compose up -d
             docker image prune -f
