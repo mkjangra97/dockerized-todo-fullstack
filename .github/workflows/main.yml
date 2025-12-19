@@ -9,6 +9,7 @@ jobs:
   login-build-push-docker:
     runs-on: ubuntu-latest
     
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v6.0.1
 
@@ -33,8 +34,12 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/todo-app-backend:latest
 
   deploy-to-ec2:
-  need: login-build-push-docker
+    need: login-build-push-docker
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6.0.1
 
       - name: Wait for EC2 Initialization
         run: sleep 15
