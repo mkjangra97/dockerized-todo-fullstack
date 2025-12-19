@@ -34,6 +34,7 @@ jobs:
       - name: Build and Push Docker Images [ Frontend ]
         uses: docker/build-push-action@v6.18.0
         with:
+          context: ./frontend
           file: ./frontend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/todo-app-frontend:latest
@@ -41,6 +42,7 @@ jobs:
       - name: Build and Push Docker Images [ Backend ]
         uses: docker/build-push-action@v6.18.0
         with:
+          context: ./backend
           file: ./backend/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/todo-app-backend:latest
@@ -64,8 +66,8 @@ jobs:
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.2.4
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
+          host: ${{ secrets.EC2_USER }}
+          username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             mkdir -p /home/ubuntu/project1
@@ -74,8 +76,8 @@ jobs:
       - name: Copy Files to EC2
         uses: appleboy/scp-action@master
         with:
-          host: ubuntu
-          username: ${{ secrets.EC2_USER }}
+          host: ${{ secrets.EC2_USER }}
+          username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: "docker-compose.yml,nginx/default.conf,.env,/frontend/.env"
           target: "/home/ubuntu/project1"
@@ -83,8 +85,8 @@ jobs:
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.2.4
         with:
-          host: ubuntu
-          username: ${{ secrets.EC2_USER }}
+          host: ${{ secrets.EC2_USER }}
+          username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/project1
