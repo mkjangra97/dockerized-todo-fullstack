@@ -18,7 +18,7 @@ services:
 
 # Backend: NodeJS + Express
   backend:
-    build: ./backend
+    image: manishjangradev/todo-app-backend
     container_name: todo-backend
     environment:
       - DB_HOST=${MYSQL_HOST}
@@ -43,7 +43,7 @@ services:
 
   # Frontend: ReactJS
   frontend:
-    build: ./frontend
+    image: manishjangradev/todo-app-frontend
     container_name: todo-frontend
     env_file:
       - ./frontend/.env
