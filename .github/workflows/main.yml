@@ -18,6 +18,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN_ID }}
+
+      #       Setup Nodejs
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v6.1.0
+        with:
+          node-version: 20
   
       - name: Build and Push Docker Images [ Frontend ]
         uses: docker/build-push-action@v6.18.0
