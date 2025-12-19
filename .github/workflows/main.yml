@@ -58,11 +58,6 @@ jobs:
       - name: Wait for EC2 Initialization
         run: sleep 15
 
-      - name: Create .env File
-        run: |
-          echo ${{ secrets.ENV_ROOT }} >> .env
-          echo ${{ secrets.ENV_FRONTEND }} >> ./frontend/.env
-
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.2.4
         with:
@@ -73,6 +68,12 @@ jobs:
             mkdir -p /home/ubuntu/project1
             mkdir -p /home/ubuntu/project1/frontend
             sudo chown ubuntu:ubuntu /home/ubuntu/project1
+            sudo chown ubuntu:ubuntu /home/ubuntu/project1/frontend
+
+      - name: Create .env File
+        run: |
+          echo ${{ secrets.ENV_ROOT }} >> .env
+          echo ${{ secrets.ENV_FRONTEND }} >> /frontend/.env
 
       - name: Copy Files to EC2
         uses: appleboy/scp-action@master
