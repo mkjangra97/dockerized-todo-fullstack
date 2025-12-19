@@ -1,7 +1,7 @@
 FROM node:22-slim AS Builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --network-timeout=100000 --prefer-offline --no-audit
+RUN npm install
 COPY . .
 RUN npm run build
 
