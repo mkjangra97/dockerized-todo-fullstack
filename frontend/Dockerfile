@@ -1,7 +1,7 @@
 FROM node:22-alpine AS Builder
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm install --network-timeout=100000 --prefer-offline --no-audit
 COPY . .
 RUN npm run build
 
