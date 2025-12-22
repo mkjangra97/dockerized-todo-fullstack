@@ -72,7 +72,7 @@ jobs:
 
       - name: Create .env File
         run: |
-          echo ${{ secrets.ENV_ROOT }} > .env
+          echo ${{ secrets.ENV_FILE }} > .env
           echo ${{ secrets.ENV_FRONTEND }} > ./frontend/.env
 
       - name: Copy Files to EC2
@@ -81,7 +81,7 @@ jobs:
           host: ${{ secrets.EC2_USER }}
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: "docker-compose.yml,nginx/default.conf,.env,frontend/.env"
+          source: "docker-compose.yml,frontend/default.conf,.env,frontend/.env"
           target: "/home/ubuntu/project1"
 
       - name: SSH and Deploy
