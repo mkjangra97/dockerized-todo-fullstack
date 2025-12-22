@@ -18,12 +18,6 @@ services:
       - /app/node_modules
     networks:
       - my-sql-networks
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--spider", "http://localhost:5000/api/messages"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
 
   # Frontend: ReactJS
   frontend:
@@ -38,12 +32,6 @@ services:
         condition: service_healthy
     networks:
       - my-sql-networks
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 5s
 
   # Database: MYSQL
   mysql-db:
