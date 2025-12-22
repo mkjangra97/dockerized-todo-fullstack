@@ -13,9 +13,9 @@ services:
       mysql-db:
         condition: service_healthy
     restart: unless-stopped
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+    # volumes:
+    #   - ./backend:/app
+    #   - /app/node_modules
     networks:
       - my-sql-networks
 
@@ -31,6 +31,7 @@ services:
       - backend
     networks:
       - my-sql-networks
+
   # Database: MYSQL
   mysql-db:
     image: mysql:8.0
