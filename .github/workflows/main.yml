@@ -72,7 +72,7 @@ jobs:
 
       - name: Create .env File
         run: |
-          echo ${{ secrets.ENV_FILE }} > .env
+          echo ${{ secrets.ENV_FILE }} > ./.env
           echo ${{ secrets.ENV_FRONTEND }} > ./frontend/.env
 
       - name: Copy Files to EC2
@@ -93,5 +93,4 @@ jobs:
           script: |
             cd /home/ubuntu/project1
             docker compose down || true
-            docker compose pull
             docker compose up -d
