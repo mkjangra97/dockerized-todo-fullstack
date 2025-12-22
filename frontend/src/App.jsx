@@ -6,7 +6,7 @@ function App() {
   const [messages, setMessages] = useState([])
   const [status, setStatus] = useState({ type: '', msg: '' })
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://backend:5000'
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
 
   useEffect(() => {
     fetchMessages()
@@ -14,10 +14,12 @@ function App() {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/messages`)
+      const response = await fetch(`${API_URL}/messages`)
       if (response.ok) {
         const data = await response.json()
         setMessages(data)
+      } else {
+        console.error("Failed to fetch messages")
       }
     } catch (error) {
       console.error('Error fetching messages:', error)
@@ -28,14 +30,17 @@ function App() {
     e.preventDefault()
     setStatus({ type: 'loading', msg: 'Saving...' })
     try {
-      const response = await fetch(`${API_URL}/api/save`, {
+
+      const response = await fetch(`${API_URL}/save`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ text }),
       })
+      
       const data = await response.json()
+      
       if (response.ok) {
         setStatus({ type: 'success', msg: 'Saved successfully!' })
         setText('')
@@ -52,7 +57,8 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${API_URL}/api/messages/${id}`, {
+
+      const response = await fetch(`${API_URL}/messages/${id}`, {
         method: 'DELETE',
       })
       if (response.ok) {

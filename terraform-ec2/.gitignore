@@ -1,0 +1,11 @@
+# --- Terraform ---
+# Ignore the .terraform directory (contains downloaded plugins/providers)
+/.terraform/
+
+# Ignore state files (Sensitive data!)
+*.tfstate
+*.tfstate.*
+
+# Ignore variable files that might contain passwords/keys
+*.tfvars
+*.auto.tfvars
