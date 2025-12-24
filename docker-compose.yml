@@ -2,7 +2,7 @@ services:
 
 # Backend: NodeJS + Express
   backend:
-    image: manishjangradev/todo-app-backend
+    image: manishjangra97/todo-app-backend
     container_name: todo-backend
     environment:
       - DB_HOST=mysql-db
@@ -21,7 +21,7 @@ services:
 
   # Frontend: ReactJS
   frontend:
-    image: manishjangradev/todo-app-frontend
+    image: manishjangra97/todo-app-frontend
     container_name: todo-frontend
     ports:
       - "80:80"
