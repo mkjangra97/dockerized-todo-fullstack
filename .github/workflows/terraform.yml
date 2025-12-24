@@ -1,0 +1,47 @@
+name: Terraform Workflow
+
+on:
+  workflow_call:
+    outputs:
+      ec2_public_ip:
+        description: "Public IP of the EC2 instance"
+        value: ${{ jobs.terraform-job.outputs.instance_ip }}
+
+jobs:
+  terraform-job:
+    runs-on: ubuntu-latest
+    outputs:
+      instance_ip: ${{ steps.set-ip.outputs.instance_ip }}
+    
+    defaults:
+      run:
+        working-directory: ./terraform-ec2
+        
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6.0.1
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_wrapper: false
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+      - name: Get EC2 IP Output
+        id: set-ip
+        run: |
+          terraform refresh
+          IP=$(terraform output -raw instance_public_ip)
+          echo "instance_ip=$IP" >> $GITHUB_OUTPUT

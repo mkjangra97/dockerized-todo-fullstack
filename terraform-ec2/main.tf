@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "terraform-bucket-devops001234" # Aapka bucket name
+    key            = "state/terraform.tfstate"      # File ka path bucket ke andar
+    region         = "ap-south-1"                    # Aapka AWS region
+    dynamodb_table = "terraform-lock"               # Jo table aapne banayi
+    encrypt        = true                           # Security ke liye encryption
+  }
+}
+
 provider "aws" {
   region = "ap-south-1"
 }
@@ -26,6 +36,13 @@ resource "aws_security_group" "web_sg" {
   ingress {
     from_port   = 80
     to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3000 # Example for React/Frontend
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }

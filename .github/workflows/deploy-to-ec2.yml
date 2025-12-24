@@ -1,0 +1,60 @@
+name: Deploy to EC2
+
+on:
+  workflow_call:
+    inputs:
+      ec2_public_ip:
+        required: true
+        type: string
+
+jobs:
+  deploy-to-ec2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Wait for EC2 Initialization
+        run: sleep 20
+
+      - name: SSH and Create Directory
+        uses: appleboy/ssh-action@v1.2.4
+        with:
+          host: ${{ inputs.ec2_public_ip }} # needs ki jagah inputs use karein
+          username: ubuntu
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            mkdir -p /home/ubuntu/project1/frontend
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/project1
+            
+      - name: Create .env File
+        shell: bash
+        env:
+          ROOT_ENV_DATA: ${{ secrets.ENV_FILE }}
+          FRONTEND_ENV_DATA: ${{ secrets.ENV_FRONTEND }}
+        run: |
+          echo "$ROOT_ENV_DATA" > .env
+          mkdir -p frontend # Safety check
+          echo "$FRONTEND_ENV_DATA" > ./frontend/.env
+
+      - name: Copy Files to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ inputs.ec2_public_ip }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          source: "docker-compose.yml,frontend/default.conf,.env,frontend/.env"
+          target: "/home/ubuntu/project1"
+
+      - name: Final SSH and Deploy
+        uses: appleboy/ssh-action@v1.2.4
+        with:
+          host: ${{ inputs.ec2_public_ip }}
+          username: ubuntu
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          script: |
+            cd /home/ubuntu/project1
+            docker compose down || true
+            docker compose pull # Build ki jagah pull use karein kyunki images build ho chuki hain
+            docker compose up -d
