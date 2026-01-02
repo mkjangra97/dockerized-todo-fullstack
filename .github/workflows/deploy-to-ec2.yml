@@ -37,7 +37,7 @@ jobs:
         run: |
           echo "$ROOT_ENV_DATA" > .env
           echo "IMAGE_TAG=${{ github.sha }}" >> .env
-          mkdir -p frontend # Safety check
+          mkdir -p frontend # Make A Folder
           echo "$FRONTEND_ENV_DATA" > ./frontend/.env
 
       - name: Copy Files to EC2
