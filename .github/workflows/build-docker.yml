@@ -33,7 +33,9 @@ jobs:
           context: ./frontend
           file: ./frontend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/todo-app-frontend:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/todo-app-frontend:latest
+            ${{ secrets.DOCKER_USERNAME }}/todo-app-frontend:${{ github.sha }}
 
       - name: Build and Push Docker Images [ Backend ]
         uses: docker/build-push-action@v6.18.0
@@ -41,4 +43,6 @@ jobs:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/todo-app-backend:latest
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/todo-app-backend:latest
+            ${{ secrets.DOCKER_USERNAME }}/todo-app-backend:${{ github.sha }}
