@@ -33,8 +33,10 @@ jobs:
         env:
           ROOT_ENV_DATA: ${{ secrets.ENV_FILE }}
           FRONTEND_ENV_DATA: ${{ secrets.ENV_FRONTEND }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           echo "$ROOT_ENV_DATA" > .env
+          echo "TAG=$IMAGE_TAG" >> .env
           mkdir -p frontend # Safety check
           echo "$FRONTEND_ENV_DATA" > ./frontend/.env
 
