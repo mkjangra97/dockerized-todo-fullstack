@@ -58,6 +58,6 @@ jobs:
           script: |
             cd /home/ubuntu/project1
             docker compose down || true
-            docker compose pull # Build ki jagah pull use karein kyunki images build ho chuki hain
-            docker compose up -d
-            docker image prune -f
+            docker compose pull
+            docker compose up -d --remove-orphans
+            docker image prune -a -f
