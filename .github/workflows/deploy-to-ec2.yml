@@ -36,7 +36,7 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           echo "$ROOT_ENV_DATA" > .env
-          echo "TAG=$IMAGE_TAG" >> .env
+          echo "IMAGE_TAG=${{ github.sha }}" >> .env
           mkdir -p frontend # Safety check
           echo "$FRONTEND_ENV_DATA" > ./frontend/.env
 
